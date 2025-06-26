@@ -1,31 +1,32 @@
 #
 # Conditional build:
-%bcond_without	doc	# don't build doc
-%bcond_without	tests	# do not perform "make test"
+%bcond_without	doc	# Sphinx documentation
+%bcond_without	tests	# unit tests
 
 Summary:	Python module to run and analyze benchmarks
 Summary(pl.UTF-8):	Moduł Pythona do uruchamiania i analizy testów wydajności
 Name:		python3-pyperf
-Version:	2.0.0
-Release:	6
+Version:	2.9.0
+Release:	1
 License:	MIT
 Group:		Libraries/Python
 #Source0Download: https://pypi.org/simple/pyperf/
 Source0:	https://files.pythonhosted.org/packages/source/p/pyperf/pyperf-%{version}.tar.gz
-# Source0-md5:	7f62d3f6fc5475138791d3d883fdf4cd
+# Source0-md5:	b5eaba731ba712c6e63f5ecc6a711ba6
 URL:		https://pypi.org/project/pyperf/
-BuildRequires:	python3-modules >= 1:3.4
-BuildRequires:	python3-setuptools
+BuildRequires:	python3-build
+BuildRequires:	python3-installer
+BuildRequires:	python3-modules >= 1:3.9
+BuildRequires:	python3-setuptools >= 1:61
 %if %{with tests}
-BuildRequires:	python3-nose
-BuildRequires:	python3-psutil
+BuildRequires:	python3-psutil >= 5.9.0
 %endif
 BuildRequires:	rpm-pythonprov
-BuildRequires:	rpmbuild(macros) >= 1.714
+BuildRequires:	rpmbuild(macros) >= 2.044
 %if %{with doc}
 BuildRequires:	sphinx-pdg-3
 %endif
-Requires:	python3-modules >= 1:3.4
+Requires:	python3-modules >= 1:3.9
 BuildArch:	noarch
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
@@ -52,11 +53,11 @@ Dokumentacja API modułu Pythona pyperf.
 %setup -q -n pyperf-%{version}
 
 %build
-%py3_build
+%py3_build_pyproject
 
 %if %{with tests}
 PYTHONPATH=$(pwd) \
-%{__python3} -m nose pyperf/tests
+%{__python3} -m unittest discover -s pyperf/tests
 %endif
 
 %if %{with doc}
@@ -67,7 +68,7 @@ PYTHONPATH=$(pwd) \
 %install
 rm -rf $RPM_BUILD_ROOT
 
-%py3_install
+%py3_install_pyproject
 
 %{__rm} -r $RPM_BUILD_ROOT%{py3_sitescriptdir}/pyperf/tests
 
@@ -79,7 +80,7 @@ rm -rf $RPM_BUILD_ROOT
 %doc COPYING README.rst TODO.rst
 %attr(755,root,root) %{_bindir}/pyperf
 %{py3_sitescriptdir}/pyperf
-%{py3_sitescriptdir}/pyperf-%{version}-py*.egg-info
+%{py3_sitescriptdir}/pyperf-%{version}.dist-info
 
 %if %{with doc}
 %files apidocs
