@@ -6,13 +6,13 @@
 Summary:	Python module to run and analyze benchmarks
 Summary(pl.UTF-8):	Moduł Pythona do uruchamiania i analizy testów wydajności
 Name:		python3-pyperf
-Version:	2.9.0
+Version:	2.11.0
 Release:	1
 License:	MIT
 Group:		Libraries/Python
 #Source0Download: https://pypi.org/simple/pyperf/
 Source0:	https://files.pythonhosted.org/packages/source/p/pyperf/pyperf-%{version}.tar.gz
-# Source0-md5:	b5eaba731ba712c6e63f5ecc6a711ba6
+# Source0-md5:	6d1b320d6aae70a3ca2c7bf26219ed78
 URL:		https://pypi.org/project/pyperf/
 BuildRequires:	python3-build
 BuildRequires:	python3-installer
